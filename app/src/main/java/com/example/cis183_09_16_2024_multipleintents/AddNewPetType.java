@@ -1,5 +1,6 @@
 package com.example.cis183_09_16_2024_multipleintents;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -14,6 +15,7 @@ public class AddNewPetType extends AppCompatActivity {
     Button btn_j_addType_newTypeButton;
     TextView tv_j_addType_errorMsgSame;
     TextView tv_j_addType_errorMsgEmpty;
+    Intent fromAddNewType_toAddNewPet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,6 +27,7 @@ public class AddNewPetType extends AppCompatActivity {
         btn_j_addType_newTypeButton = findViewById(R.id.btn_v_addType_addType);
         tv_j_addType_errorMsgSame = findViewById(R.id.tv_v_addType_errorSame);
         tv_j_addType_errorMsgEmpty = findViewById(R.id.tv_v_addType_errorEmpty);
+        fromAddNewType_toAddNewPet = new Intent(AddNewPetType.this, AddNewPet.class);
         //Set error messages to invisible
         tv_j_addType_errorMsgSame.setVisibility(View.INVISIBLE);
         tv_j_addType_errorMsgEmpty.setVisibility(View.INVISIBLE);
@@ -37,7 +40,6 @@ public class AddNewPetType extends AppCompatActivity {
         btn_j_addType_newTypeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Integer i = 0;
                 //Retrieve the text entered in the EditText
                 String typeEntered = et_j_addType_insertType.getText().toString();
                 //Check if the EditText is empty
@@ -47,9 +49,16 @@ public class AddNewPetType extends AppCompatActivity {
                 }
                 else {
                     //Check if the string matches anything in the already-existing list of types
-                    Integer iType = 0;
-                    while (iType < Pet.petType.types.size(), iType++) {
-                        if ()
+                    tv_j_addType_errorMsgEmpty.setVisibility(View.INVISIBLE);
+                    for (int iType = 0; iType < Pet.petType.types.size(); iType++) {
+                        if (typeEntered.equalsIgnoreCase(Pet.petType.getPetAt(iType))) {
+                            tv_j_addType_errorMsgSame.setVisibility(View.VISIBLE);
+                            break;
+                        }
+                        else {
+                            Pet.petType.types.add(typeEntered);
+                            startActivity(fromAddNewType_toAddNewPet);
+                        }
                     }
                 }
             }
